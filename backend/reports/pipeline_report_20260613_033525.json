@@ -1,0 +1,32 @@
+{
+  "run_at": "2026-06-13T03:35:25.031709",
+  "source_file": "uploads\\sample_data.csv",
+  "rows": 10000,
+  "columns": 26,
+  "quality_score": 80.0,
+  "issues": [],
+  "pipeline_logs": [
+    "[03:35:24] Starting ingestion...",
+    "[03:35:24] CSV parsed \u2014 10,000 rows \u00d7 14 columns",
+    "[03:35:24] Columns detected: order_id, order_date, product, category, price, quantity, revenue, region, customer_id, status, return_flag, payment_method, shipping_days, discount_percent",
+    "[03:35:24] Memory usage: 5609.7 KB",
+    "[03:35:24] Starting cleaning...",
+    "[03:35:24] Column names standardized to snake_case",
+    "[03:35:24] No duplicate rows found",
+    "[03:35:24] Data types inferred and corrected",
+    "[03:35:24] Nulls handled: 474 \u2192 474 remaining after imputation",
+    "[03:35:24] String values trimmed and standardized",
+    "[03:35:24] Rows: 10,000 \u2192 10,000 after cleaning",
+    "[03:35:24] Starting transformation...",
+    "[03:35:24] Date features extracted from 'order_date'",
+    "[03:35:24] Min-max normalization applied to 8 numeric columns",
+    "[03:35:24] Added 'revenue_tier' quartile segmentation",
+    "[03:35:24] Transformation complete \u2014 26 total columns",
+    "[03:35:24] Starting validation...",
+    "[03:35:24] No null values \u2014 data is complete",
+    "[03:35:24] Outlier scan: 7,324 outliers detected across numeric columns",
+    "[03:35:25] Data quality score: 80.0/100",
+    "[03:35:25]   Completeness: 100.0%  |  Uniqueness: 100.0%",
+    "[03:35:25] Starting load..."
+  ]
+}

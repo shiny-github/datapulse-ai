@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+pandas
+numpy
+groq
+chromadb
+python-multipart
+openpyxl
+sentence-transformers
+python-dotenv
+scikit-learn
+azure-storage-blob
