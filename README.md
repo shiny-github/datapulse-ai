@@ -235,7 +235,7 @@ datapulse-ai/
 ## 👩‍💻 Built By
 
 **Ananya Katram**
-Data Analytics Professional · 3+ years in Financial Services & Healthcare · MS Computer Science, UT Arlington
+Data Analytics Enthusiast · MS Computer Science, UT Arlington
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/ananya-katram/)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github)](https://github.com/shiny-github)
