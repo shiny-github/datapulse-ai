@@ -47,7 +47,7 @@ export default function Dashboard() {
       })
       .catch((e) => {
         if (e.response?.status === 400) setNoData(true);
-        else setError("Cannot reach backend at http://localhost:8000");
+        else setError("Cannot reach backend at https://datapulse-ai-1t5i.onrender.com");
       })
       .finally(() => setLoading(false));
   };
