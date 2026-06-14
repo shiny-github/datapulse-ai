@@ -8,6 +8,7 @@
 [![React](https://img.shields.io/badge/React_18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org)
 [![Python](https://img.shields.io/badge/Python_3.10-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-e91e8c?style=for-the-badge)](https://datapulse-ai-six.vercel.app)
+[![Backend API](https://img.shields.io/badge/🔧_Backend-Live_API-00b894?style=for-the-badge)](https://datapulse-ai-1t5i.onrender.com)
 
 > Upload your data. Run the pipeline. Ask AI anything. Get insights in minutes — not days.
 
