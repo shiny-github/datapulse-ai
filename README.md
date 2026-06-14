@@ -7,6 +7,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React_18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org)
 [![Python](https://img.shields.io/badge/Python_3.10-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-e91e8c?style=for-the-badge)](https://datapulse-ai-six.vercel.app)
 
 > Upload your data. Run the pipeline. Ask AI anything. Get insights in minutes — not days.
 
@@ -18,6 +19,8 @@
 ## 🎯 The Problem We Solve
 
 Data analysts spend **80% of their time** cleaning, transforming, and preparing data — before any real analysis even begins. Generic AI tools like ChatGPT can *describe* what a pipeline should look like, but they can't actually *run* one on your data.
+
+
 
 **DataPulse AI changes that.**
 
