@@ -6,62 +6,30 @@ from typing import Optional
 import pandas as pd
 from groq import Groq
 from dotenv import load_dotenv
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-try:
-    import chromadb
-    from chromadb.config import Settings
-    from sentence_transformers import SentenceTransformer
-    VECTOR_AVAILABLE = True
-except ImportError:
-    VECTOR_AVAILABLE = False
-    logger.warning("chromadb or sentence-transformers not available — falling back to keyword search")
-
-
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-CHROMA_DIR = "chroma_store"
 
 
 class RAGSystem:
     def __init__(self):
         self.groq = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
-        self.collection = None
-        self.encoder = None
         self.df: Optional[pd.DataFrame] = None
         self.chunks: list[str] = []
         self.chunk_meta: list[dict] = []
-        self._init_vector_store()
-
-    def _init_vector_store(self):
-        if not VECTOR_AVAILABLE:
-            return
-        try:
-            os.makedirs(CHROMA_DIR, exist_ok=True)
-            client = chromadb.PersistentClient(path=CHROMA_DIR)
-            self.collection = client.get_or_create_collection(
-                name="datapulse_chunks",
-                metadata={"hnsw:space": "cosine"},
-            )
-            self.encoder = SentenceTransformer("all-MiniLM-L6-v2")
-            logger.info("ChromaDB vector store initialized")
-        except Exception as e:
-            logger.warning(f"Vector store init failed: {e}")
-            self.collection = None
+        self.vectorizer = TfidfVectorizer(stop_words="english", max_features=5000)
+        self.tfidf_matrix = None
 
     def reset(self):
         self.df = None
         self.chunks = []
         self.chunk_meta = []
-        if self.collection:
-            try:
-                existing = self.collection.get()
-                if existing["ids"]:
-                    self.collection.delete(ids=existing["ids"])
-            except Exception:
-                pass
+        self.tfidf_matrix = None
 
     def index_dataframe(self, df: pd.DataFrame, dataset_name: str):
         self.df = df
@@ -103,27 +71,18 @@ class RAGSystem:
             self.chunks.append(row_text)
             self.chunk_meta.append({"type": "rows", "start": start, "end": end, "dataset": dataset_name})
 
-        # Index into ChromaDB
-        if self.collection and self.encoder:
-            try:
-                embeddings = self.encoder.encode(self.chunks, show_progress_bar=False).tolist()
-                ids = [f"chunk_{i}" for i in range(len(self.chunks))]
-                self.collection.upsert(
-                    ids=ids,
-                    embeddings=embeddings,
-                    documents=self.chunks,
-                    metadatas=self.chunk_meta,
-                )
-                logger.info(f"Indexed {len(self.chunks)} chunks into ChromaDB")
-            except Exception as e:
-                logger.warning(f"ChromaDB indexing failed: {e}")
+        # Fit TF-IDF on all chunks
+        if self.chunks:
+            self.tfidf_matrix = self.vectorizer.fit_transform(self.chunks)
+            logger.info(f"Indexed {len(self.chunks)} chunks with TF-IDF")
 
     def _retrieve(self, question: str, top_k: int = 3) -> list[str]:
-        if self.collection and self.encoder and len(self.chunks) > 0:
+        if self.tfidf_matrix is not None and len(self.chunks) > 0:
             try:
-                query_emb = self.encoder.encode([question]).tolist()
-                results = self.collection.query(query_embeddings=query_emb, n_results=min(top_k, len(self.chunks)))
-                return results["documents"][0]
+                query_vec = self.vectorizer.transform([question])
+                scores = cosine_similarity(query_vec, self.tfidf_matrix).flatten()
+                top_indices = scores.argsort()[::-1][:top_k]
+                return [self.chunks[i] for i in top_indices]
             except Exception:
                 pass
 
